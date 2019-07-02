@@ -1,16 +1,11 @@
-import React, { Component } from 'react';
+import React from "react";
 
-
-class DemoProps extends Component{
-    constructor(props){
-    super(props)
-    }
-    render() {
-        return (
-            <p >Your name is: {this.props.student.name}</p>
-        );
-    }
-
-}
+const DemoProps = ({ student: { id, name } }) => {
+  return (
+    <p>
+      Your id is: {id} and your name is: {name}
+    </p>
+  );
+};
 
 export default DemoProps;
