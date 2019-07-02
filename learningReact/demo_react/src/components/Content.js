@@ -75,7 +75,7 @@ const Content = () => {
 
         <div className="col-sm-4" />
       </div>
-      <h1>This is a Col</h1>s
+      <h1>This is a Col</h1>
       <div className="row">
         <div className="col-sm-4">
           <h3>Column 1</h3>
