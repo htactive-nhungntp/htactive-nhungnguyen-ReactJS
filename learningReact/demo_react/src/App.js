@@ -5,6 +5,8 @@ import Content from "./components/Content";
 import Footer from "./components/Footer";
 import DemoProps from "./Props/DemoProps";
 import DemoClock from "./StatesLifecycle/DemoClock";
+import DemoHandlingEvent from "./HandlingEvent/DemoHandlingEvent";
+
 function App() {
   const student = { id: 1, name: "nhung", age: 20 };
   const menu = {
@@ -18,6 +20,7 @@ function App() {
       <Footer />
       <DemoProps student={student} />
       <DemoClock />
+      <DemoHandlingEvent />
     </>
   );
 }

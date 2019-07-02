@@ -3,16 +3,16 @@ import React, { Component } from "react";
 class DemoClock extends Component {
   constructor(props) {
     super(props);
-    this.state = { date: new Date() };// Declare state in the constructor 
+    this.state = { date: new Date() }; // Declare state in the constructor
   }
 
   componentDidMount() {
-     // console.log("componentDidMount");
+    // console.log("componentDidMount");
     this.timerID = setInterval(() => this.tick(), 1000);
   }
 
   componentWillUnmount() {
-      //console.log("componentWillUnmount");
+    //console.log("componentWillUnmount");
     clearInterval(this.timerID);
   }
 
@@ -23,7 +23,7 @@ class DemoClock extends Component {
   }
 
   render() {
-   // console.log("render");
+    // console.log("render");
     return (
       <div>
         <h1>Demo State and Lifecycle</h1>
@@ -33,4 +33,4 @@ class DemoClock extends Component {
   }
 }
 
-export default DemoClock
+export default DemoClock;
