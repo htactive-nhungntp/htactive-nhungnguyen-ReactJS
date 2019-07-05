@@ -11,3 +11,9 @@
   margin-left: 15px;
   width: 150px;
 }
+#completed{
+  text-decoration: line-through;
+}
+.enableInput{
+  pointer-events: none
+}

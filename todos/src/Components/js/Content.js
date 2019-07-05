@@ -1,59 +1,32 @@
 import React, { Component } from "react";
 import "../css/content.css";
+import Item from "./Item";
 
-class Content extends Component {
+export default class Content extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      task: [],
+    this.state={
       newtask: ""
-    };
+    }
   }
-
-  async componentDidMount() {
-    await fetch("https://5d1c825af31e7f00147eb7d6.mockapi.io/task", {
-      method: "GET",
-      mode: "cors"
-    })
-      .then(res => res.json())
-      .then(data => {
-        this.setState({
-          task: data
-        });
-      })
-      .catch(err => err);
-    console.log("Data here:", this.state.task);
-  }
-
-  addNewTask = async () => {
-    let newtask = { taskname: this.state.newtask, iscompleted: false };
-    let arr = this.state.task;
-    arr.push(newtask);
-    this.setState({
-      task: arr
-    });
-    await fetch("https://5d1c825af31e7f00147eb7d6.mockapi.io/task", {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify(newtask),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => console.log(res))
-      .catch(err => err);
-  };
 
   handleChange = event => {
     this.setState({ newtask: event.target.value });
   };
-  toggleChange = () => {
-    this.setState({
-      iscompleted: !this.state.task.iscompleted
-    });
-  };
+  addNewTask() {
+    this.props.addNewTask(this.state.newtask);
+  }
+
   render() {
+    console.log("Items: ", this.props.items);
+    let items = this.props.items.map(item => (
+      <Item
+        item={item}
+        addNewTask={this.props.addNewTask}
+        toggleChange={this.props.toggleChange}
+      />
+    ));
+
     return (
       <div className="container">
         <div className="content-area row">
@@ -99,48 +72,7 @@ class Content extends Component {
               </button>
             </div>
             <ul className="list-group" id="taskList">
-              {this.state.task.map((item, i) => (
-                <li className="list-group-item checkbox" key={i}>
-                  <div className="row">
-                    <div className="col-md-1 col-xs-1 col-lg-1 col-sm-1 checkbox">
-                      <label>
-                        <input
-                          id="toggleTaskStatus"
-                          type="checkbox"
-                          status={item.iscompleted ? "defaultChecked" : ""}
-                          onClick={() => item.id}
-                        />
-                      </label>
-                    </div>
-                    <div className="col-md-10 col-xs-10 col-lg-10 col-sm-10 task-text  ">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id=""
-                        value={item.taskname}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-1 col-xs-1 col-lg-1 col-sm-1 delete-icon-area">
-                      <div className="icon">
-                        <div className="row">
-                          <a className="icon">
-                            <i id="pen" className="fa fa-pencil" />
-                          </a>
-                          &nbsp;&nbsp;
-                          <a className="icon">
-                            <i className="fa fa-trash" />
-                          </a>
-                          &nbsp;&nbsp;
-                          <a className="icon">
-                            <i className="fa fa-check" hidden />
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              ))}
+              {items}
             </ul>
           </div>
         </div>
@@ -148,4 +80,3 @@ class Content extends Component {
     );
   }
 }
-export default Content;
