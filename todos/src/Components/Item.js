@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../css/item.css";
+import "./style/item.css";
 
 export default class Item extends Component {
   constructor(props) {
@@ -11,6 +11,7 @@ export default class Item extends Component {
   }
   handleChange = event => {
     this.setState({ task_update: event.target.value });
+    this.props.item.taskname = event.target.value;
   };
 
   onClickCheck = () => {
@@ -29,25 +30,19 @@ export default class Item extends Component {
     });
   };
 
+  deleteTask = id => {
+    this.props.deleteTask(id);
+  };
+
   toggleChange = () => {
     this.props.toggleChange({
       ...this.props.item,
-      iscompleted: !this.props.iscompleted
+      iscompleted: !this.props.item.iscompleted
     });
   };
 
-  //   onClickTrash = () =>{
-  //     return fetch('http://api.symfony-3.dev/app_dev.php/posts/' + id, {
-  //         method: 'DELETE',
-  //         mode: 'CORS'
-  //     }).then(res => {
-  //         return res;
-  //     }).catch(err => err);
-  //   }
-
   render() {
-    console.log("Item: ", this.props.item);
-    const  { id, taskname, iscompleted } = this.props.item;
+    const { id, taskname, iscompleted } = this.props.item;
     const { display } = this.state;
     return (
       <li className="list-group-item checkbox" key={id}>
@@ -58,33 +53,38 @@ export default class Item extends Component {
                 id="toggleTaskStatus"
                 type="checkbox"
                 defaultChecked={iscompleted}
-                onClick={() => this.toggleChange({ id, taskname, iscompleted })}
+                onClick={() => this.toggleChange()}
               />
             </label>
           </div>
-          <div className="col-md-10 col-xs-10 col-lg-10 col-sm-10 task-text  ">
+          <div className="col-md-10 col-xs-10 col-lg-10 col-sm-10 task-text">
             <input
               id={iscompleted ? "completed" : " "}
               type="text"
+              value={taskname}
               className={this.state.display ? "disabledInput" : "enableInput"}
-              defaultValue={taskname}
               onChange={this.handleChange}
             />
           </div>
           <div className="col-md-1 col-xs-1 col-lg-1 col-sm-1 delete-icon-area">
             <div className="icon">
               <div className="row">
-                <a className="icon" onClick={this.onClickPencil}>
-                  {!display && <i id="pen" className="fa fa-pencil" />}
-                </a>
+                {!display && (
+                  <i
+                    id="pen"
+                    className="fa fa-pencil"
+                    onClick={this.onClickPencil}
+                  />
+                )}
                 &nbsp;&nbsp;
-                <a className="icon">
-                  <i className="fa fa-trash" />
-                </a>
+                <i
+                  className="fa fa-trash"
+                  onClick={() => this.deleteTask(id)}
+                />
                 &nbsp;&nbsp;
-                <a className="icon" onClick={this.onClickCheck}>
-                  {display && <i className="fa fa-check" />}
-                </a>
+                {display && (
+                  <i className="fa fa-check" onClick={this.onClickCheck} />
+                )}
               </div>
             </div>
           </div>

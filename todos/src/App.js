@@ -1,21 +1,17 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import "./App.css";
-import Header from "./Components/js/Header";
-import Content from "./Components/js/Content";
-import Item from "./Components/js/Item";
+import Header from "./Components/Header";
+import Content from "./Components/Content";
 
-
-export default class App extends Component{
-
-  constructor(props){
+export default class App extends Component {
+  constructor(props) {
     super(props);
     this.state = {
-      task: [],
-      newtask: "",
+      task: []
     };
   }
 
-  async componentDidMount() {
+  getData = async () => {
     await fetch("https://5d1c825af31e7f00147eb7d6.mockapi.io/task", {
       method: "GET",
       mode: "cors"
@@ -27,10 +23,14 @@ export default class App extends Component{
         });
       })
       .catch(err => err);
-    console.log("Data here:", this.state.task);
+    console.log(this.state.task);
+  };
+
+  componentDidMount() {
+    this.getData();
   }
 
-  addNewTask = async (item) => {
+  addNewTask = async item => {
     let newtask = { taskname: item, iscompleted: false };
 
     await fetch("https://5d1c825af31e7f00147eb7d6.mockapi.io/task", {
@@ -51,35 +51,40 @@ export default class App extends Component{
       .catch(err => err);
   };
 
-  toggleChange = item => {
-    // const itemTask = this.state.task.find(x => x.id === id);
-    item.iscompleted = !item.iscompleted;
-    fetch(`https://5d1c825af31e7f00147eb7d6.mockapi.io/task/${item.id}`, 
-    {
+  toggleChange = async item => {
+    await fetch(`https://5d1c825af31e7f00147eb7d6.mockapi.io/task/${item.id}`, {
       method: "PUT",
       mode: "cors",
       body: JSON.stringify(item),
       headers: {
         "Content-Type": "application/json"
       }
-    }).then(res => res.json());
-    let arr = this.state.task;
-    this.setState({
-      task: arr
+    }).then(res => {
+      if (res.status === 200) this.getData();
     });
-    // .catch(err =>err);
   };
 
+  deleteTask = id => {
+    fetch(`https://5d1c825af31e7f00147eb7d6.mockapi.io/task/${id}`, {
+      method: "delete",
+      mode: "cors"
+    }).then(res => {
+      if (res.status === 200) this.getData();
+    });
+  };
 
-  render(){
+  render() {
     const task = this.state.task;
-    console.log(task);
     return (
       <>
         <Header />
-        <Content items={task} addNewTask={this.addNewTask} toggleChange={this.toggleChange}/>
+        <Content
+          items={task}
+          addNewTask={this.addNewTask}
+          toggleChange={this.toggleChange}
+          deleteTask={this.deleteTask}
+        />
       </>
     );
   }
 }
-

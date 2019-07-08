@@ -1,29 +1,40 @@
 import React, { Component } from "react";
-import "../css/content.css";
+import "./style/content.css";
 import Item from "./Item";
+import ProgressBar from "./ProgressBar"
 
 export default class Content extends Component {
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       newtask: ""
-    }
+    };
   }
 
   handleChange = event => {
     this.setState({ newtask: event.target.value });
   };
-  addNewTask() {
-    this.props.addNewTask(this.state.newtask);
+
+  addNewTask = ()=>{
+    if (this.state.newtask === "") {
+      alert("Data empty !!!");
+    }
+     else {
+      this.props.addNewTask(this.state.newtask);
+      this.setState({
+        newtask: ""
+      })
+    }
   }
 
   render() {
-    console.log("Items: ", this.props.items);
     let items = this.props.items.map(item => (
       <Item
+        key={item.id}
         item={item}
         addNewTask={this.props.addNewTask}
         toggleChange={this.props.toggleChange}
+        deleteTask={this.props.deleteTask}
       />
     ));
 
@@ -39,27 +50,23 @@ export default class Content extends Component {
                   placeholder="New Task"
                   className="form-control"
                   id="addTask"
+                  value = {this.state.newtask}
                   autoFocus
                   onChange={this.handleChange}
                 />
               </div>
               <div className="form-group col-md-1">
                 <button
+                  id="btn-add"
                   className="btn btn-success"
+                  
                   onClick={() => this.addNewTask()}
                 >
                   Add
                 </button>
               </div>
             </div>
-            <div className="progress">
-              <div
-                role="progressbar"
-                aria-valuemin={0}
-                aria-valuemax={100}
-                id="progress"
-              />
-            </div>
+            <ProgressBar/>
             <div className="row input-area">
               <button type="button" className="btn btn-success">
                 Select all
