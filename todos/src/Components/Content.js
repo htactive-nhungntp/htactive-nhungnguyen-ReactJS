@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./style/content.css";
 import Item from "./Item";
-import ProgressBar from "./ProgressBar"
+import ProgressBar from "./ProgressBar";
 
 export default class Content extends Component {
   constructor(props) {
@@ -15,17 +15,16 @@ export default class Content extends Component {
     this.setState({ newtask: event.target.value });
   };
 
-  addNewTask = ()=>{
+  addNewTask = () => {
     if (this.state.newtask === "") {
       alert("Data empty !!!");
-    }
-     else {
+    } else {
       this.props.addNewTask(this.state.newtask);
       this.setState({
         newtask: ""
-      })
+      });
     }
-  }
+  };
 
   render() {
     let items = this.props.items.map(item => (
@@ -50,7 +49,7 @@ export default class Content extends Component {
                   placeholder="New Task"
                   className="form-control"
                   id="addTask"
-                  value = {this.state.newtask}
+                  value={this.state.newtask}
                   autoFocus
                   onChange={this.handleChange}
                 />
@@ -59,14 +58,13 @@ export default class Content extends Component {
                 <button
                   id="btn-add"
                   className="btn btn-success"
-                  
                   onClick={() => this.addNewTask()}
                 >
                   Add
                 </button>
               </div>
             </div>
-            <ProgressBar/>
+            <ProgressBar />
             <div className="row input-area">
               <button type="button" className="btn btn-success">
                 Select all
