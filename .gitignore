@@ -2,6 +2,7 @@
 
 # dependencies
 /training-react/node_modules
+/demo-router/node_modules
 /todos/node_modules
 /.pnp
 .pnp.js
